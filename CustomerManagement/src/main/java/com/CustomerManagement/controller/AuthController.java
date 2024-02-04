@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.CustomerManagement.config.JwtHelper;
 import com.CustomerManagement.models.JwtRequest;
 import com.CustomerManagement.models.JwtResponse;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import ch.qos.logback.classic.Logger;
 
 @RestController
@@ -40,7 +40,7 @@ public class AuthController {
     private org.slf4j.Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("/login")
-     public ResponseEntity<JwtResponse> login(JwtRequest jwtRequest){
+     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest jwtRequest){
 	  System.out.println(jwtRequest);
     	this.doAuthenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
     	UserDetails userdetails=userDetailsService.loadUserByUsername(jwtRequest.getUsername());
