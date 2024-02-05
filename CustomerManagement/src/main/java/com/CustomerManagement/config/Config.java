@@ -30,7 +30,14 @@ public class Config {
 	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 	        http.csrf(csrf -> csrf.disable())
-	                .cors(cors->cors.disable()).
+	                .cors(cors->cors.configurationSource(request -> {
+	                	CorsConfiguration configuration= new CorsConfiguration();
+						configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
+						configuration.setAllowedMethods(Collections.singletonList("*"));
+						configuration.setAllowCredentials(true);
+						configuration.setAllowedHeaders(Collections.singletonList("*"));
+						configuration.setExposedHeaders(Arrays.asList("Authorization"));
+						return configuration;})).
 	                authorizeHttpRequests(auth->auth.requestMatchers("/swagger-ui/**").permitAll().requestMatchers("/v3/api-docs/**").permitAll()
 	                		.requestMatchers("/auth/login").permitAll().anyRequest().authenticated()).
 	                exceptionHandling(ex->ex.authenticationEntryPoint(point))

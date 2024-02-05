@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CustomerManagement.config.JwtHelper;
 import com.CustomerManagement.models.JwtRequest;
 import com.CustomerManagement.models.JwtResponse;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import ch.qos.logback.classic.Logger;
 
 @RestController

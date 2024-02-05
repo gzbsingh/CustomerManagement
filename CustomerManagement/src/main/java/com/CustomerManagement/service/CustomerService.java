@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.CustomerManagement.models.Customer;
@@ -55,11 +59,21 @@ public class CustomerService {
 
 	    /**
 	     * Get a list of all customers.
+	     * @param search 
+	     * @param sortOrder 
+	     * @param sortBy 
+	     * @param pageSize 
+	     * @param page 
 	     *
 	     * @return The list of all customers.
 	     */
-	    public List<Customer> getAllCustomers() {
-	        return customerRepository.findAll();
+	    public Page<Customer> getAllCustomers(int page, int pageSize, String sortBy, String sortOrder, String search) {
+	       Pageable pageable=PageRequest.of(page-1, pageSize, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
+	    	if(search.isEmpty())
+	       return customerRepository.findAll(pageable);
+	    	else {
+	    		return customerRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(search,search,pageable);
+	    	}
 	    }
 
 	    /**

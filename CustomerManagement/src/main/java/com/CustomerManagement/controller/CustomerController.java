@@ -1,5 +1,6 @@
 package com.CustomerManagement.controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,8 +10,9 @@ import com.CustomerManagement.service.CustomerService;
 
 import java.util.List;
 import java.util.Optional;
-@CrossOrigin("*")
+
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/customers")
 public class CustomerController {
 
@@ -52,8 +54,13 @@ public class CustomerController {
      * @return ResponseEntity containing the list of customers and HTTP status.
      */
     @GetMapping("/AllCustomers")
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        List<Customer> customers = customerService.getAllCustomers();
+    public ResponseEntity<Page<Customer>> getAllCustomers(
+    		@RequestParam(defaultValue = "1") int page,
+    				@RequestParam(defaultValue = "5" )int pageSize,
+    				@RequestParam(defaultValue = "id" )String sortBy,
+    				@RequestParam(defaultValue = "asc" )String sortOrder,
+    				@RequestParam(defaultValue = "" )String search) {
+       Page<Customer> customers = customerService.getAllCustomers(page,pageSize,sortBy,sortOrder,search);
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
